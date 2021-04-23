@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Project exclude paths
+/target/
+/.idea/
+AllegroInternTask.iml
+*.json
