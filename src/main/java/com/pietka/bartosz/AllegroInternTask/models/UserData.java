@@ -2,7 +2,6 @@ package com.pietka.bartosz.AllegroInternTask.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 @AllArgsConstructor
