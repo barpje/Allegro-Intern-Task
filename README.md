@@ -5,11 +5,11 @@ Task was about creating server application which allows fetching repositories (n
 ## Technology stack
 - Java 11
 - Spring Boot
-- Retrofit - to make connection with GitHub API
+- Retrofit - to make synchronous connection with GitHub API
 - Lombok
 ## Installation
 You need:
-- JDK 13 or later
+- JDK 11 or later
 - maven
 
 In order to compile and run the code go to the exercise directory and type:
