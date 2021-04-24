@@ -58,7 +58,7 @@ public class GitHubUserService implements GitHubAPIConfiguration {
         List<List<Repository>> repositories = new ArrayList<>(pages);
         try {
             CompletableFuture<Void> task = CompletableFuture.allOf(
-                    requests.toArray(new CompletableFuture[requests.size()]));
+                    requests.toArray(new CompletableFuture[pages]));
             task.join();
 
             for (var r : requests) {
