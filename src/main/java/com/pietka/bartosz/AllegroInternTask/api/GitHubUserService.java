@@ -40,7 +40,7 @@ public class GitHubUserService implements GitHubAPIConfiguration {
 
     public List<Repository> getAllRepositories(String username) throws ResponseStatusException {
         UserData userdata = getUserData(username);
-        int pages = GitHubUtil.calculateNumberOfPages(userdata);
+        int pages = GitHubUtil.calculateNumberOfPages(userdata, MAX_PER_PAGE);
         List<List<Repository>> repositories = new ArrayList<>(pages);
         for (int page = 0; page < pages; page++) {
             repositories.add(getRepositories(userdata.getLogin(), MAX_PER_PAGE, page + 1));
@@ -55,7 +55,7 @@ public class GitHubUserService implements GitHubAPIConfiguration {
     */
     public int getUserStars(String username) throws ResponseStatusException {
         UserData userdata = getUserData(username);
-        int pages = GitHubUtil.calculateNumberOfPages(userdata);
+        int pages = GitHubUtil.calculateNumberOfPages(userdata, MAX_PER_PAGE);
         int sumOfStars = 0;
         for (int page = 0; page < pages; page++) {
             sumOfStars += RepositoryUtil.returnSumOfStars(getRepositories(userdata.getLogin(), MAX_PER_PAGE, page + 1));
