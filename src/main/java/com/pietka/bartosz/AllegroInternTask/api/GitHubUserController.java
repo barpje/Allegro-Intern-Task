@@ -2,7 +2,6 @@ package com.pietka.bartosz.AllegroInternTask.api;
 
 import com.google.gson.JsonObject;
 import com.pietka.bartosz.AllegroInternTask.models.Repository;
-import com.pietka.bartosz.AllegroInternTask.models.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
