@@ -31,7 +31,7 @@ public final class RetrofitUtils {
         }
     }
 
-    public static <E> CompletableFuture<E> executeAsyncRetrofitCall(final Call<E> call) {
+    public static <E> CompletableFuture<E> executeAsyncRetrofitCall(final Call<E> call) throws ResponseStatusException {
         final CompletableFuture<E> future = new CompletableFuture<>();
         call.enqueue(
                 new Callback<>() {
