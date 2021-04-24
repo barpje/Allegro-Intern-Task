@@ -5,6 +5,7 @@ import com.pietka.bartosz.AllegroInternTask.models.UserData;
 import com.pietka.bartosz.AllegroInternTask.utils.GitHubUtil;
 import com.pietka.bartosz.AllegroInternTask.utils.RepositoryUtil;
 import com.pietka.bartosz.AllegroInternTask.utils.RetrofitUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import retrofit2.Call;
@@ -12,6 +13,7 @@ import retrofit2.Call;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class GitHubUserService implements GitHubAPIConfiguration {
@@ -24,42 +26,50 @@ public class GitHubUserService implements GitHubAPIConfiguration {
 
     public UserData getUserData(String username) throws ResponseStatusException {
         Call<UserData> retrofitCall = service.getUserData(API_VERSION_SPEC, username);
-        return RetrofitUtils.executeRetrofitCall(retrofitCall)
+        return RetrofitUtils.executeSyncRetrofitCall(retrofitCall)
                 .orElseGet(() -> new UserData("login", 0));
     }
 
     public List<Repository> getRepositories(String username) throws ResponseStatusException {
         Call<List<Repository>> retrofitCall = service.getUserRepositories(API_VERSION_SPEC, username);
-        return RetrofitUtils.executeRetrofitCall(retrofitCall).orElseGet(Collections::emptyList);
+        return RetrofitUtils.executeSyncRetrofitCall(retrofitCall).orElseGet(Collections::emptyList);
     }
 
     public List<Repository> getRepositories(String username, int per_page, int page) throws ResponseStatusException {
         Call<List<Repository>> retrofitCall = service.getUserRepositories(API_VERSION_SPEC, username, per_page, page);
-        return RetrofitUtils.executeRetrofitCall(retrofitCall).orElseGet(Collections::emptyList);
+        return RetrofitUtils.executeSyncRetrofitCall(retrofitCall).orElseGet(Collections::emptyList);
+    }
+
+    public int getUserStars(String username) throws ResponseStatusException {
+        List<Repository> repositories = getAllRepositories(username);
+        return RepositoryUtil.returnSumOfStars(repositories);
     }
 
     public List<Repository> getAllRepositories(String username) throws ResponseStatusException {
         UserData userdata = getUserData(username);
         int pages = GitHubUtil.calculateNumberOfPages(userdata, MAX_PER_PAGE);
-        List<List<Repository>> repositories = new ArrayList<>(pages);
+        List<CompletableFuture<List<Repository>>> requests = new ArrayList<>(pages);
+
         for (int page = 0; page < pages; page++) {
-            repositories.add(getRepositories(userdata.getLogin(), MAX_PER_PAGE, page + 1));
+            requests.add(RetrofitUtils.executeAsyncRetrofitCall(
+                    service.getUserRepositories(API_VERSION_SPEC, username, MAX_PER_PAGE, page + 1)));
+        }
+
+        List<List<Repository>> repositories = new ArrayList<>(pages);
+        try {
+            CompletableFuture<Void> task = CompletableFuture.allOf(
+                    requests.toArray(new CompletableFuture[requests.size()]));
+            task.join();
+
+            for (var r : requests) {
+                repositories.add(r.get());
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    e.getMessage());
         }
         return GitHubUtil.concatenateMultipleLists(repositories);
     }
-    /*
-    public int getUserStars(String username) throws ResponseStatusException {
-        List<Repository> repositories = getAllRepositories(username);
-        return RepositoryUtil.returnSumOfStars(repositories);
-    }
-    */
-    public int getUserStars(String username) throws ResponseStatusException {
-        UserData userdata = getUserData(username);
-        int pages = GitHubUtil.calculateNumberOfPages(userdata, MAX_PER_PAGE);
-        int sumOfStars = 0;
-        for (int page = 0; page < pages; page++) {
-            sumOfStars += RepositoryUtil.returnSumOfStars(getRepositories(userdata.getLogin(), MAX_PER_PAGE, page + 1));
-        }
-        return sumOfStars;
-    }
+
 }
