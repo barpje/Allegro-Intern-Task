@@ -29,9 +29,10 @@ mvn test
 ```
 ## Limitations:
 - From GitHub API: For unauthenticated requests, the rate limit allows for up to 60 requests per hour. Unauthenticated requests are associated with the originating IP address, and not the user making requests.
-- accept-type: application/json 
+- accept-type: application/json
+- response-status: 200, 202, 404, 500 
 ## List of endpoints:
-- GET: /user/{username}/repositories\
+- **GET: /user/{username}/repositories**\
 Return list of user public repositories with pagination(as default first 30 repositories). Use single synchronous Retrofit call.\
 -- parameters: username in path\
 -- optional: per_page(default = 30, max = 100) and page in query\
@@ -39,16 +40,15 @@ Example of usage:
 /user/allegro/repositories\
 /user/allegro/repositories?per_page=60&page=1
 ---
-- GET: /user/{username}/repositories/all\
+- **GET: /user/{username}/repositories/all**\
 Return list of all user public repositories. Use multiple asynchronous Retrofit calls to improve speed.\
 -- parameters: username in path\
 Example of usage: 
 /user/allegro/repositories/all
 ---
-- GET: /user/{username}/stars\
+- **GET: /user/{username}/stars**\
 Return number of stars in all user public repositories. Use multiple asynchronous Retrofit calls to improve speed.\
 -- parameters: username in path\
 Example of usage: 
 /user/allegro/stars
 ---
-For async calls i used CompletableFuture
