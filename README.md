@@ -44,11 +44,31 @@ Example of usage:
 Return list of all user public repositories. Use multiple asynchronous Retrofit calls to improve speed.\
 -- parameters: username in path\
 Example of usage: 
-/user/allegro/repositories/all
+/user/allegro/repositories/all\
+Response format:
+```json
+[
+      {
+         "name": "item1",
+         "stargazers_count": 132
+      },
+      {
+         "name": "item2",
+         "stargazers_count": 15
+      }
+]
+```
 ---
 - **GET: /user/{username}/stars**\
 Return number of stars in all user public repositories. Use multiple asynchronous Retrofit calls to improve speed.\
 -- parameters: username in path\
 Example of usage: 
-/user/allegro/stars
+/user/allegro/stars\
+Response format:
+```json
+{
+     "totalStars": 122
+}
+
+```
 ---
