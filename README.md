@@ -36,7 +36,7 @@ mvn test
 - **GET: /user/{username}/repositories**\
 Return list of user public repositories alphabetical order with pagination(as default first 30 repositories). Use single synchronous Retrofit call.\
 -- parameters: username in path\
--- optional: per_page(default = 30, max = 100) and page in query\
+-- optional: per_page(default = 30, max = 100) and page in query
 
 Example of usage: 
 /user/allegro/repositories\
