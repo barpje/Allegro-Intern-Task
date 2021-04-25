@@ -37,13 +37,15 @@ mvn test
 Return list of user public repositories alphabetical order with pagination(as default first 30 repositories). Use single synchronous Retrofit call.\
 -- parameters: username in path\
 -- optional: per_page(default = 30, max = 100) and page in query\
+
 Example of usage: 
 /user/allegro/repositories\
 /user/allegro/repositories?per_page=60&page=1
 ---
 - **GET: /user/{username}/repositories/all**\
-Return list of all user public repositories in alphabetical order. Use multiple asynchronous Retrofit calls to improve speed.\
+Return list of all user public repositories. Use multiple asynchronous Retrofit calls to improve speed (with asynchronous calls it runs ~6 times faster for large data).\
 -- parameters: username in path\
+
 Example of usage: 
 /user/allegro/repositories/all\
 Response format:
@@ -61,10 +63,12 @@ Response format:
 ```
 ---
 - **GET: /user/{username}/stars**\
-Return number of stars in all user public repositories. Use multiple asynchronous Retrofit calls to improve speed.\
+Return number of stars in all user public repositories. Use multiple asynchronous Retrofit calls to improve speed (with asynchronous calls it runs ~6 times faster for large data).\
 -- parameters: username in path\
+
 Example of usage: 
 /user/allegro/stars\
+
 Response format:
 ```json
 {
