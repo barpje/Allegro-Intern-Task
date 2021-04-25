@@ -1,4 +1,3 @@
-
 # Allegro Intern Task 2021
 
 Task was about creating server application which allows fetching repositories (name, stars) and total number of stars for any GitHub user. 
@@ -39,15 +38,17 @@ Return list of user public repositories alphabetical order with pagination(as de
 -- optional: per_page(default = 30, max = 100) and page in query
 
 Example of usage: 
-/user/allegro/repositories\
-/user/allegro/repositories?per_page=60&page=1
+http://localhost:8080/user/allegro/repositories
+http://localhost:8080/user/allegro/repositories?per_page=60&page=1
+
 ---
 - **GET: /user/{username}/repositories/all**\
 Return list of all user public repositories. Use multiple asynchronous Retrofit calls to improve speed (with asynchronous calls it runs ~6 times faster for large data).\
 -- parameters: username in path
 
 Example of usage: 
-/user/allegro/repositories/all\
+http://localhost:8080/user/allegro/repositories/all
+
 Response format:
 ```json
 [
@@ -67,7 +68,7 @@ Return number of stars in all user public repositories. Use multiple asynchronou
 -- parameters: username in path
 
 Example of usage: 
-/user/allegro/stars
+http://localhost:8080/user/allegro/stars
 
 Response format:
 ```json
