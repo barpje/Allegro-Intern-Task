@@ -5,7 +5,6 @@ import com.pietka.bartosz.AllegroInternTask.models.UserData;
 import com.pietka.bartosz.AllegroInternTask.utils.GitHubUtil;
 import com.pietka.bartosz.AllegroInternTask.utils.RepositoryUtil;
 import com.pietka.bartosz.AllegroInternTask.utils.RetrofitUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import retrofit2.Call;
@@ -55,20 +54,7 @@ public class GitHubUserService implements GitHubAPIConfiguration {
                     service.getUserRepositories(API_VERSION_SPEC, username, MAX_PER_PAGE, page + 1)));
         }
 
-        List<List<Repository>> repositories = new ArrayList<>(pages);
-        try {
-            CompletableFuture<Void> task = CompletableFuture.allOf(
-                    requests.toArray(new CompletableFuture[pages]));
-            task.join();
-
-            for (var r : requests) {
-                repositories.add(r.get());
-            }
-        } catch (Exception e) {
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    e.getMessage());
-        }
+        List<List<Repository>> repositories = RetrofitUtils.getResultFromFutures(requests);
         return GitHubUtil.concatenateMultipleLists(repositories);
     }
 

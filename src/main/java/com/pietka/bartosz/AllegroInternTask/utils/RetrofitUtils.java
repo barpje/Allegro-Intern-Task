@@ -8,8 +8,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public final class RetrofitUtils {
@@ -52,6 +51,27 @@ public final class RetrofitUtils {
                     }
                 });
         return future;
+    }
+
+    public static <E> List<E> getResultFromFutures(List<CompletableFuture<E>> futures) throws ResponseStatusException {
+        int size = futures.size();
+        if (size == 0) {
+            return Collections.emptyList();
+        }
+        List<E> result = new ArrayList<>(size);
+        try {
+            CompletableFuture<Void> task = CompletableFuture.allOf(
+                    futures.toArray(new CompletableFuture[size]));
+            task.join();
+            for (var r : futures) {
+                result.add(r.get());
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    e.getMessage());
+        }
+        return result;
     }
 }
 
