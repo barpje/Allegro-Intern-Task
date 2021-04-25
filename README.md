@@ -37,8 +37,8 @@ Return list of user public repositories alphabetical order with pagination(as de
 -- parameters: username in path\
 -- optional: per_page(default = 30, max = 100) and page in query
 
-Example of usage: 
-http://localhost:8080/user/allegro/repositories
+Example of usage:\ 
+http://localhost:8080/user/allegro/repositories\
 http://localhost:8080/user/allegro/repositories?per_page=60&page=1
 
 ---
@@ -67,7 +67,7 @@ Response format:
 Return number of stars in all user public repositories. Use multiple asynchronous Retrofit calls to improve speed (with asynchronous calls it runs ~6 times faster for large data).\
 -- parameters: username in path
 
-Example of usage: 
+Example of usage:\ 
 http://localhost:8080/user/allegro/stars
 
 Response format:
