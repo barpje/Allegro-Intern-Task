@@ -44,7 +44,7 @@ Example of usage:
 ---
 - **GET: /user/{username}/repositories/all**\
 Return list of all user public repositories. Use multiple asynchronous Retrofit calls to improve speed (with asynchronous calls it runs ~6 times faster for large data).\
--- parameters: username in path\
+-- parameters: username in path
 
 Example of usage: 
 /user/allegro/repositories/all\
@@ -64,10 +64,10 @@ Response format:
 ---
 - **GET: /user/{username}/stars**\
 Return number of stars in all user public repositories. Use multiple asynchronous Retrofit calls to improve speed (with asynchronous calls it runs ~6 times faster for large data).\
--- parameters: username in path\
+-- parameters: username in path
 
 Example of usage: 
-/user/allegro/stars\
+/user/allegro/stars
 
 Response format:
 ```json
