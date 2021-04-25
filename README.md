@@ -1,3 +1,4 @@
+
 # Allegro Intern Task 2021
 
 Task was about creating server application which allows fetching repositories (name, stars) and total number of stars for any GitHub user. 
@@ -22,7 +23,7 @@ java -jar AllegroInternTask-1.0.jar
 ```
 
 
-To run the tests just type:
+To run the tests type:
 
 ```bash
 mvn test
@@ -33,7 +34,7 @@ mvn test
 - response-status: 200, 202, 404, 500 
 ## List of endpoints:
 - **GET: /user/{username}/repositories**\
-Return list of user public repositories with pagination(as default first 30 repositories). Use single synchronous Retrofit call.\
+Return list of user public repositories alphabetical order with pagination(as default first 30 repositories). Use single synchronous Retrofit call.\
 -- parameters: username in path\
 -- optional: per_page(default = 30, max = 100) and page in query\
 Example of usage: 
@@ -41,7 +42,7 @@ Example of usage:
 /user/allegro/repositories?per_page=60&page=1
 ---
 - **GET: /user/{username}/repositories/all**\
-Return list of all user public repositories. Use multiple asynchronous Retrofit calls to improve speed.\
+Return list of all user public repositories in alphabetical order. Use multiple asynchronous Retrofit calls to improve speed.\
 -- parameters: username in path\
 Example of usage: 
 /user/allegro/repositories/all\
@@ -72,3 +73,8 @@ Response format:
 
 ```
 ---
+**NOTE:** For users with large number of repositories e.g. Microsoft we need to send about ~40 request to GitHub API. It may take several seconds(usually ~8). Also in one request we use more than 50% of hourly GitHub limit for unauthenticated requests.
+## Future improvments:
+- add authenticated request
+- add more options to get different data
+- add option to modify user repositories
